@@ -1,20 +1,12 @@
 # Hardware Device Project
-This project demonstrates how to control an LED connected to a Raspberry Pi using both local GPIO control and remote MQTT messages via AWS IoT Core.
+This project demonstrates how to control an LED connected to a Raspberry Pi using local GPIO and remote MQTT messages via AWS IoT Core.
 
-## File Structure 
-1. mqtt_led_control.py
-Connects the Raspberry Pi to AWS IoT Core using MQTT. It subscribes to a topic and turns the LED on or off based on received messages.
+## File Structure
+- **mqtt_led_control.py**
+  - Connects the Raspberry Pi to AWS IoT Core using MQTT. Subscribes to a topic and turns the LED on or off (and sets intensity) based on received messages.
 
-2. GPIO_LED.py
-Controls the LED locally using PWM (Pulse Width Modulation) to adjust its brightness over time. It uses a global variable to track the start time and changes the LED’s intensity based on elapsed time.
-
-3. globals.py
-Stores global variables, such as the LED start time, for use across scripts.
-
-4. README.md
-This file. Explains the project, file structure, and setup instructions.
-
-### Setup Instructions
+- **README.md**
+  - This file. Explains the project, file structure, and setup instructions.
 
 ## Prerequisites
 1. Raspberry Pi with Raspbian OS
@@ -24,25 +16,24 @@ This file. Explains the project, file structure, and setup instructions.
 5. AWS IoT device certificates (RaspberryPi.cert.pem, RaspberryPi.private.key, root-CA.crt)
 6. Internet connection for the Raspberry Pi
 
-
-### Installation
+## Installation
 1. **Install Required Python Packages**
-Open a terminal and run:
-pip install RPi.GPIO awscrt awsiot
-
+   ```sh
+   pip install RPi.GPIO awscrt awsiot
+   ```
 2. **Prepare AWS IoT Certificates**
-Place AWS IoT device certificates in the project directory:
-    RaspberryPi.cert.pem
-    RaspberryPi.private.key
-    root-CA.crt
-Update the paths in mqtt_led_control.py if filenames differ.
+   Place AWS IoT device certificates in the project directory:
+   - RaspberryPi.cert.pem
+   - RaspberryPi.private.key
+   - root-CA.crt
+   Update the paths in `mqtt_led_control.py` if filenames differ.
 
 3. **Wiring the LED**
-Connect the LED (with a resistor) to GPIO pin 17 and ground on your Raspberry Pi.
+   Connect the LED (with a resistor) to GPIO pin 17 and ground on your Raspberry Pi.
 
-4. **Running the Scripts**
-The script will connect to AWS IoT Core and listen for messages on the /smarthome/commands/led topic.
-Send "on" or "off" messages to this topic to control the LED.
+4. **Running the Script**
+   The script will connect to AWS IoT Core and listen for messages on the `/smarthome/commands/led` topic.
+   Send JSON messages (e.g., `{ "state": "on", "brightness": 80 }`) to control the LED.
 
-5. **Stopping the Scripts**
-Press Ctrl+C in the terminal to stop either script. The GPIO pins will be cleaned up automatically.
+5. **Stopping the Script**
+   Press Ctrl+C in the terminal to stop the script. The GPIO pins will be cleaned up automatically.
